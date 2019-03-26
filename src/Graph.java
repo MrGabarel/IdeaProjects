@@ -19,7 +19,7 @@ public class Graph {
     }
     public void addUndirectedEdge(String name1, String name2){
         addDirectedEdge(name1, name2);
-        addDirectedEdge(name2, name2);
+        addDirectedEdge(name2, name1);
     }
     public static Node getNode(String name){
         return nodes.get(name);

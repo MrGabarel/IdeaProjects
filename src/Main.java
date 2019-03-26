@@ -18,12 +18,16 @@ public class Main {
             System.out.println("You are in the " + current);
             System.out.println("What do you want to do? >");
             response = s.nextLine();
-            if (response.substring(0,2).equals("go ") && Graph.getNode(response.substring(3)) != null)
-                current = response.substring(3);
+            if (response.length() > 2 && response.substring(0,3).equals("go ") && Graph.getNode(response.substring(3)) != null) {
+                if (g.getNodes().get(current).getNeighbor(response.substring(3)) != null)
+                    current = response.substring(3);
+                else
+                    System.out.println("can't go there");
+            }
             else if (response.equals("look")) {
                 System.out.println(g.getNodes().get(current).getNeighborsNameAndDescriptions());
             }
-            else if (response.substring(0,8).equals("add room ")) {
+            else if (response.length() > 8 && response.substring(0,8).equals("add room ")) {
                 g.addNode(response.substring(9), "");
                 g.addDirectedEdge(current, response.substring(9));
             }
