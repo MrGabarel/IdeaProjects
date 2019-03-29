@@ -12,12 +12,8 @@ public class Main {
             System.out.println("You are in the " + current);
             System.out.println("What do you want to do? >");
             response = s.nextLine();
-            if (response.length() > 2 && response.substring(0,3).equals("go ") && Graph.getNode(response.substring(3)) != null) {
-                if (g.getNodes().get(current).getNeighbor(response.substring(3)) != null)
-                    current = response.substring(3);
-                else
-                    System.out.println("can't go there");
-            }
+            if (isValidGo(g, response)) go(g, current, response);
+            //TODO change all the other methods in a similar matter
             else if (response.equals("look")) {
                 System.out.println(g.getNodes().get(current).getNeighborsNameAndDescriptions());
             }
@@ -32,6 +28,16 @@ public class Main {
                 displayCommands();
             }
         } while (!response.equals("quit"));
+    }
+    private static String go(Graph g, String current, String response){
+        if (g.getNodes().get(current).getNeighbor(response.substring(3)) != null)
+            return response.substring(3);
+        else
+            System.out.println("can't go there");
+        return null;
+    }
+    private static boolean isValidGo(Graph g, String response){
+        return (response.length() > 2 && response.substring(0,3).equals("go ") && g.getNode(response.substring(3)) != null);
     }
     private static void displayCommands(){
         System.out.println("\"go <roomName>\" moves you to the room you entered");
