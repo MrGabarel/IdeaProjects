@@ -3,13 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Graph g = new Graph();
-        g.addNode("hall", "a long dank hallway");
-        g.addNode("closet", "a dark, dark closet");
-        g.addNode("dungeon", "a scary dungeon");
-
-        g.addDirectedEdge("hall", "dungeon");
-        g.addUndirectedEdge("hall", "closet");
-        String current = "hall";
+        String current = generateWorld(g);
         String response;
         Scanner s = new Scanner(System.in);
         System.out.println("Commands you can use:");
@@ -44,5 +38,14 @@ public class Main {
         System.out.println("\"look\" shows you a list of all the rooms you can go to");
         System.out.println("\"add room <roomName>\" adds room by the name roomName with a connection to your current room");
         System.out.println("\"quit\" quits the game");
+    }
+    private static String generateWorld(Graph g){
+        g.addNode("hall", "a long dank hallway");
+        g.addNode("closet", "a dark, dark closet");
+        g.addNode("dungeon", "a scary dungeon");
+        g.addDirectedEdge("hall", "dungeon");
+        g.addUndirectedEdge("hall", "closet");
+        String current = "hall";
+        return current;
     }
 }

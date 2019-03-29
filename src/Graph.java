@@ -26,13 +26,36 @@ public class Graph {
     }
     public class Node {
         private HashMap<String, Node> neighbors;
+        private HashMap<String, Item> items;
         private String description;
         Node(String description){
             neighbors = new HashMap<>();
+            items = new HashMap<>();
             this.description = description;
         }
         private void addNeighbor(String name){
             neighbors.put(name, nodes.get(name));
+        }
+
+        private void addItem(String name, String description){
+            items.put(name, new Item(description));
+        }
+
+        private Item getItem(String name){
+            return items.get(name);
+        }
+
+        private Item removeItem(String name) {
+            return items.remove(name);
+        }
+
+        private String getItemNames(){
+            String output = "";
+            for (String name: items.keySet())
+                output = output + ", " + name + " - " + items.get(name).getDescription();
+            if (output.length() > 0)
+                return output.substring(2);
+            return output;
         }
 
         public String getDescription() {
