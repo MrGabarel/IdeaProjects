@@ -51,7 +51,7 @@ public class Graph {
             items.put(name, null);
         }
 
-        public void putItem(String name, Item item) {
+        public void addItem(String name, Item item) {
             items.put(name, item);
         }
 

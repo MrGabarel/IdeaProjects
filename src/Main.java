@@ -4,32 +4,42 @@ public class Main {
     public static void main(String[] args) {
         Graph g = new Graph();
         Player p = new Player("Guy", "A level 5 wizard", g);
-        String current = generateWorld(g);
+        p.setCurrentRoom(generateWorld(g));
         String response;
         Scanner s = new Scanner(System.in);
         System.out.println("Commands you can use:");
         displayCommands();
         do {
-            System.out.println("You are in the " + current);
+            System.out.println("You are in the " + p.getCurrentRoom());
             System.out.println("What do you want to do? >");
             response = s.nextLine();
-            if (isValidGo(g, response)) go(g, current, response);
+            if (isValidGo(g, response)) go(g, p, response);
             //TODO change all the other methods in a similar matter
             else if (response.equals("look")) {
-                System.out.println(g.getNodes().get(current).getNeighborsNameAndDescriptions());
+                System.out.println(g.getNodes().get(p.getCurrentRoom()).getNeighborsNameAndDescriptions());
             }
             else if (response.length() > 8 && response.substring(0,8).equals("add room ")) {
                 g.addNode(response.substring(9), "");
-                g.addDirectedEdge(current, response.substring(9));
+                g.addDirectedEdge(p.getCurrentRoom(), response.substring(9));
             }
             else if (response.equals("items")){
-                System.out.println(g.getNode(current).getItemNames());
+                System.out.println(g.getNode(p.getCurrentRoom()).getItemNames());
+            }
+            else if (response.equals("display inventory")){
+                p.displayInventory();
             }
             else if (response.length() > 5 && response.substring(0, 5).equals("take ")){
-                if (g.getNode(current).getItem(response.substring(5)) != null){
-                    p.addItem(response.substring(5), g.getNode(current).getItem(response.substring(5)));
+                if (g.getNode(p.getCurrentRoom()).getItem(response.substring(5)) != null){
+                    p.addItem(response.substring(5), g.getNode(p.getCurrentRoom()).getItem(response.substring(5)));
                 } else {
-                    System.out.println("That item doesn't exist, try \"items\" to get a list of the items");
+                    System.out.println("That item doesn't exist, try \"items\" to get a list of the items in the room");
+                }
+            }
+            else if (response.length() > 5 && response.substring(0, 5).equals("drop ")){
+                if (p.getItems().get(response.substring(5)) != null){
+                    g.getNode(p.getCurrentRoom()).addItem(response.substring(5), p.getItems().get(response.substring(5)));
+                } else {
+                    System.out.println("That item doesn't exist, try \"display inventory\" to get a list of your items");
                 }
             }
             else if (response.equals("quit"))
@@ -40,12 +50,11 @@ public class Main {
             }
         } while (!response.equals("quit"));
     }
-    private static String go(Graph g, String current, String response){
-        if (g.getNodes().get(current).getNeighbor(response.substring(3)) != null)
-            return response.substring(3);
+    private static void go(Graph g, Player p, String response){
+        if (g.getNodes().get(p.getCurrentRoom()).getNeighbor(response.substring(3)) != null)
+            p.setCurrentRoom(response.substring(3));
         else
             System.out.println("can't go there");
-        return null;
     }
     private static boolean isValidGo(Graph g, String response){
         return (response.length() > 2 && response.substring(0,3).equals("go ") && g.getNode(response.substring(3)) != null);
