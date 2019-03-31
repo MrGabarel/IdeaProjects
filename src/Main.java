@@ -21,6 +21,10 @@ public class Main {
                 g.addNode(response.substring(9), "");
                 g.addDirectedEdge(current, response.substring(9));
             }
+            else if (response.equals("items")){
+                System.out.println(g.getNode(current).getItemNames());
+            }
+
             else if (response.equals("quit"))
                 System.out.println("The game had ended");
             else {
@@ -42,6 +46,7 @@ public class Main {
     private static void displayCommands(){
         System.out.println("\"go <roomName>\" moves you to the room you entered");
         System.out.println("\"look\" shows you a list of all the rooms you can go to");
+        System.out.println("\"items\" gives you a list of all items in the room");
         System.out.println("\"add room <roomName>\" adds room by the name roomName with a connection to your current room");
         System.out.println("\"quit\" quits the game");
     }

@@ -37,19 +37,19 @@ public class Graph {
             neighbors.put(name, nodes.get(name));
         }
 
-        private void addItem(String name, String description){
+        public void addItem(String name, String description){
             items.put(name, new Item(description));
         }
 
-        private Item getItem(String name){
+        public Item getItem(String name){
             return items.get(name);
         }
 
-        private Item removeItem(String name) {
+        public Item removeItem(String name) {
             return items.remove(name);
         }
 
-        private String getItemNames(){
+        public String getItemNames(){
             String output = "";
             for (String name: items.keySet())
                 output = output + ", " + name + " - " + items.get(name).getDescription();
