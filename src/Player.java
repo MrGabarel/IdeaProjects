@@ -23,7 +23,7 @@ public class Player {
     }
     public void displayInventory(){
         for (String name: items.keySet()) {
-            System.out.println(name + ", ");
+            System.out.print(name + ", ");
         }
         System.out.println("\b\b");
     }

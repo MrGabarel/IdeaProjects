@@ -48,7 +48,7 @@ public class Graph {
         }
 
         public void addItem(String name) {
-            items.put(name, null);
+            items.put(name, new Item(null));
         }
 
         public void addItem(String name, Item item) {

@@ -30,14 +30,15 @@ public class Main {
             }
             else if (response.length() > 5 && response.substring(0, 5).equals("take ")){
                 if (g.getNode(p.getCurrentRoom()).getItem(response.substring(5)) != null){
-                    p.addItem(response.substring(5), g.getNode(p.getCurrentRoom()).getItem(response.substring(5)));
+                    p.addItem(response.substring(5), g.getNode(p.getCurrentRoom()).removeItem(response.substring(5)));
                 } else {
                     System.out.println("That item doesn't exist, try \"items\" to get a list of the items in the room");
                 }
             }
             else if (response.length() > 5 && response.substring(0, 5).equals("drop ")){
                 if (p.getItems().get(response.substring(5)) != null){
-                    g.getNode(p.getCurrentRoom()).addItem(response.substring(5), p.getItems().get(response.substring(5)));
+                    g.getNode(p.getCurrentRoom()).addItem(response.substring(5), p.removeItem(response.substring(5)));
+
                 } else {
                     System.out.println("That item doesn't exist, try \"display inventory\" to get a list of your items");
                 }
@@ -62,9 +63,13 @@ public class Main {
     private static void displayCommands(){
         System.out.println("\"go <roomName>\" moves you to the room you entered");
         System.out.println("\"look\" shows you a list of all the rooms you can go to");
+        System.out.println("\"take <itemName>\" makes the player pick up an item in the room");
         System.out.println("\"items\" gives you a list of all items in the room");
+        System.out.println("\"drop <itemName>\" makes the player drop an item in the inventory");
+        System.out.println("\"display inventory\" displays the player's inventory");
         System.out.println("\"add room <roomName>\" adds room by the name roomName with a connection to your current room");
         System.out.println("\"quit\" quits the game");
+
     }
     private static String generateWorld(Graph g){
         g.addNode("hall", "a long dank hallway");
@@ -72,6 +77,9 @@ public class Main {
         g.addNode("dungeon", "a scary dungeon");
         g.addDirectedEdge("hall", "dungeon");
         g.addUndirectedEdge("hall", "closet");
+        g.getNode("hall").addItem("lobster");
+        g.getNode("hall").addItem("key");
+        g.getNode("closet").addItem("shirt");
         String current = "hall";
         return current;
     }
