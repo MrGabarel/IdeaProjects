@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Graph g = new Graph();
+        Player p = new Player("Guy", "A level 5 wizard", g);
         String current = generateWorld(g);
         String response;
         Scanner s = new Scanner(System.in);
@@ -24,7 +25,13 @@ public class Main {
             else if (response.equals("items")){
                 System.out.println(g.getNode(current).getItemNames());
             }
-
+            else if (response.length() > 5 && response.substring(0, 5).equals("take ")){
+                if (g.getNode(current).getItem(response.substring(5)) != null){
+                    p.addItem(response.substring(5), g.getNode(current).getItem(response.substring(5)));
+                } else {
+                    System.out.println("That item doesn't exist, try \"items\" to get a list of the items");
+                }
+            }
             else if (response.equals("quit"))
                 System.out.println("The game had ended");
             else {
