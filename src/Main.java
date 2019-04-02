@@ -14,7 +14,7 @@ public class Main {
             System.out.println("What do you want to do? >");
             response = s.nextLine();
             if (isValidGo(g, response)) go(g, p, response);
-            //TODO change all the other methods in a similar matter
+            //TODO change all the other methods in a similar manner
             else if (response.equals("look")) {
                 System.out.println(g.getNodes().get(p.getCurrentRoom()).getNeighborsNameAndDescriptions());
             }
