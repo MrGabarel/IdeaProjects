@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
 public class Main {
+    static Graph g = new Graph();
+    static Player p = new Player("Guy", "A level 5 wizard", g);
     public static void main(String[] args) {
-        Graph g = new Graph();
-        Player p = new Player("Guy", "A level 5 wizard", g);
         p.setCurrentRoom(generateWorld(g));
         String response;
         Scanner s = new Scanner(System.in);
@@ -75,11 +75,15 @@ public class Main {
         g.addNode("hall", "a long dank hallway");
         g.addNode("closet", "a dark, dark closet");
         g.addNode("dungeon", "a scary dungeon");
-        g.addDirectedEdge("hall", "dungeon");
+        g.addUndirectedEdge("hall", "dungeon");
         g.addUndirectedEdge("hall", "closet");
         g.getNode("hall").addItem("lobster");
         g.getNode("hall").addItem("key");
         g.getNode("closet").addItem("shirt");
+        for (int i = 0; i < 450; i++) {
+            String room = g.getRandomRoom();
+            g.addCreature(new Chicken(room, p, g), room);
+        }
         String current = "hall";
         return current;
     }

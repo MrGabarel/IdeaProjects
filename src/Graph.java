@@ -1,7 +1,9 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Graph {
     public static HashMap<String, Node> nodes;
+    public static ArrayList<Creature> creatures;
 
     public Graph() {
         nodes = new HashMap<>();
@@ -28,9 +30,23 @@ public class Graph {
         return nodes.get(name);
     }
 
+    public String getRandomRoom() {
+        ArrayList<String> rooms = new ArrayList<>(nodes.keySet());
+        if (rooms.size() > 0) {
+            int random = (int) (rooms.size() * Math.random());
+            return rooms.get(random);
+        }
+        return null;
+    }
+
+    public void addCreature(Creature creature, String room){
+        nodes.get(room).addCreature(creature);
+    }
+
     public class Node {
         private HashMap<String, Node> neighbors;
         private HashMap<String, Item> items;
+        private ArrayList<Creature> creatures;
         private String description;
 
         Node(String description) {
@@ -95,6 +111,11 @@ public class Graph {
             this.description = description;
         }
 
+        public ArrayList<String> getNeighbors() {
+            ArrayList<String> output = new ArrayList<String>(neighbors.keySet());
+            return output;
+        }
+
         public String getNeighborsNameAndDescriptions() {
             String output = "";
             for (String name : neighbors.keySet())
@@ -106,6 +127,13 @@ public class Graph {
 
         public Node getNeighbor(String nodeName) {
             return neighbors.get(nodeName);
+        }
+
+        public void addCreature(Creature creature){
+            creatures.add(creature);
+        }
+        public void removeCreature(Creature creature){
+            creatures.remove(creature);
         }
     }
 }
