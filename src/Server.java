@@ -17,11 +17,9 @@ public class Server {
         System.out.println("[SERVER] Connected to client!");
         PrintWriter out = new PrintWriter(client.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-        String request = in.readLine();
-
         try {
             while (true) {
+                String request = in.readLine();
                 if (request.contains("name")) {
                     out.println(getRandomName());
                 } else {
