@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class Main {
-    static Graph g = new Graph();
-    static Player p = new Player("Guy", "A level 5 wizard", g);
+    private static Graph g = new Graph();
+    private static Player p = new Player("Guy", "A level 5 wizard", g);
 
     public static void main(String[] args) {
         p.setCurrentRoom(generateWorld());
@@ -15,7 +15,6 @@ public class Main {
             System.out.println("What do you want to do? >");
             response = s.nextLine();
             if (isValidGo(response)) go(response);
-                //TODO change all the other methods in a similar manner
             else if (response.equals("look")) {
                 System.out.println(g.getNodes().get(p.getCurrentRoom()).getNeighborsNameAndDescriptions());
             } else if (response.length() > 8 && response.substring(0, 8).equals("add room ")) {
@@ -92,7 +91,6 @@ public class Main {
             if (i%3 == 0) g.addCreature(new Wumpus(room, p, g), room);
             if (i%5 == 0) g.addCreature(new PopStar(room, p, g), room);
         }
-        String current = "hall";
-        return current;
+        return "hall";
     }
 }

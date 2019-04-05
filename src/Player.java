@@ -11,7 +11,7 @@ public class Player {
     public Player(String name, String description, Graph g) {
         this.name = name;
         this.description = description;
-        items = new HashMap<String, Item>();
+        items = new HashMap<>();
         graph = g;
     }
 
