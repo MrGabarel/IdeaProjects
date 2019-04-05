@@ -7,7 +7,7 @@ public class Chicken extends Creature{
 
     @Override
     protected String move() {
-        ArrayList<String> adjacentRooms = Graph.getNode(currentRoom).getNeighbors();
+        ArrayList<String> adjacentRooms = graph.getNode(currentRoom).getNeighbors();
         if (adjacentRooms.size() > 0) {
             int random = (int) (adjacentRooms.size() * Math.random());
             return adjacentRooms.get(random);

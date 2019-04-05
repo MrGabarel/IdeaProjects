@@ -20,9 +20,9 @@ public abstract class Creature {
 
     protected void updateLocation(String newLocation){
         if (newLocation != null) {
-            Graph.getNode(currentRoom).removeCreature(this);
+            graph.getNode(currentRoom).removeCreature(this);
             currentRoom = newLocation;
-            Graph.getNode(newLocation).addCreature(this);
+            graph.getNode(newLocation).addCreature(this);
         }
     }
 

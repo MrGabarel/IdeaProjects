@@ -2,14 +2,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Graph {
-    public static HashMap<String, Node> nodes;
-    public static ArrayList<Creature> creatures;
+    public HashMap<String, Node> nodes;
+    public ArrayList<Creature> creatures;
 
     public Graph() {
         nodes = new HashMap<>();
+        creatures = new ArrayList<>();
     }
 
-    public static HashMap<String, Node> getNodes() {
+    public HashMap<String, Node> getNodes() {
         return nodes;
     }
 
@@ -26,7 +27,7 @@ public class Graph {
         addDirectedEdge(name2, name1);
     }
 
-    public static Node getNode(String name) {
+    public Node getNode(String name) {
         return nodes.get(name);
     }
 
@@ -39,8 +40,13 @@ public class Graph {
         return null;
     }
 
-    public void addCreature(Creature creature, String room){
+    public void addCreature(Creature creature, String room) {
+        if (creature == null || room == null) System.out.println("problem");
         nodes.get(room).addCreature(creature);
+    }
+
+    public ArrayList<Creature> getCreatures() {
+        return creatures;
     }
 
     public class Node {
@@ -52,6 +58,7 @@ public class Graph {
         Node(String description) {
             neighbors = new HashMap<>();
             items = new HashMap<>();
+            creatures = new ArrayList<>();
             this.description = description;
         }
 
@@ -129,11 +136,27 @@ public class Graph {
             return neighbors.get(nodeName);
         }
 
-        public void addCreature(Creature creature){
+        public void addCreature(Creature creature) {
             creatures.add(creature);
         }
-        public void removeCreature(Creature creature){
+
+        public void removeCreature(Creature creature) {
             creatures.remove(creature);
+        }
+
+        public void displayCreatures() {
+            int chickens = 0;
+            int wumpuses = 0;
+            int popStars = 0;
+            for (Creature c : creatures) {
+                if (c instanceof Chicken) chickens++;
+                if (c instanceof Wumpus) wumpuses++;
+                if (c instanceof PopStar) popStars++;
+            }
+            System.out.println("There are " + chickens + " chickens");
+            System.out.println("There are " + wumpuses + " wumpuses");
+            System.out.println("There are " + popStars + " popStars");
         }
     }
 }
+
