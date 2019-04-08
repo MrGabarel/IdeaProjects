@@ -11,8 +11,9 @@ public class PopStar extends Creature {
             return null;
         }
         ArrayList<String> adjacentRooms = graph.getNode(currentRoom).getNeighbors();
-        if (graph.getNode(player.getCurrentRoom()).getNeighbor(currentRoom) != null) {
-            return player.getCurrentRoom();
+        String theWay = this.getRoomSightRange(roomSightRange, currentRoom, player.getCurrentRoom());
+        if (theWay != null) {
+            return theWay;
         } else {
             if (adjacentRooms.size() > 0) {
                 int random = (int) (adjacentRooms.size() * Math.random());
