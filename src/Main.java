@@ -1,8 +1,10 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
     private static Graph g = new Graph();
     private static Player p = new Player("Guy", "A level 5 wizard", g);
+    private static HashMap<String, Command> commands = new HashMap<>();
 
     public static void main(String[] args) {
         p.setCurrentRoom(generateWorld());
@@ -85,6 +87,13 @@ public class Main {
         g.getNode("hall").addItem("lobster");
         g.getNode("hall").addItem("key");
         g.getNode("closet").addItem("shirt");
+        commands.put("go", new Go(g, p));
+        commands.put("look", new Look(g, p));
+        commands.put("take", new Take(g, p));
+        commands.put("items", new Items(g, p));
+        commands.put("creatures", new Creatures(g, p));
+        commands.put("drop", new Drop(g, p));
+        //TODO add other methods fix interaction fix wumpus bug only finding one path leading to player
         for (int i = 0; i < 450; i++) {
             String room = g.getRandomRoom();
             g.addCreature(new Chicken(room, p, g), room);
