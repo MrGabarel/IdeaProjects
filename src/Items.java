@@ -7,7 +7,7 @@ public class Items extends Command {
     @Override
     public boolean execute() {
         System.out.println(graph.getNode(player.getCurrentRoom()).getItemNames());
-        return (graph.getNode(player.getCurrentRoom()).getItemNames().equals(""));
+        return (!graph.getNode(player.getCurrentRoom()).getItemNames().equals(""));
     }
 
     public Items(Graph g, Player p) {

@@ -28,21 +28,21 @@ public abstract class Creature {
     }
 
     //If a room is within N rooms of the creature's current room return the name of the room that leads to it
-    protected String getRoomSightRange(int n, String initialRoom, String targetRoom){
-        if (n == 1){
-            if (graph.getNode(initialRoom).getNeighbor(targetRoom) != null) {
-                return initialRoom;
-            } else {
-                return null;
-            }
+    protected String getDirectionToTargetRoom(int n, String initialRoom, String targetRoom){
+        String output = "";
+        if (graph.getNode(initialRoom).getNeighbor(targetRoom) != null){
+            return targetRoom;
+        } else if (n == 1){
+            return null;
         } else {
             for (String room : graph.getNode(initialRoom).getNeighbors()) {
-                if (room.equals(targetRoom))return room;
-                String result = getRoomSightRange(n - 1, room, targetRoom);
-                if (result != null) return result;
+                String direction = getDirectionToTargetRoom(n - 1, room, targetRoom);
+                if (n == roomSightRange) output = output + " " + room;
+                else if (direction != null) return room;
             }
         }
-        return null;
+        if (n == roomSightRange) return output;
+        else return null;
     }
 
     protected abstract String move();

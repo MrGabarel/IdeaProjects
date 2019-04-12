@@ -12,6 +12,9 @@ public class Go extends Command{
     @Override
     public boolean execute() {
         boolean success = player.moveToRoom(room);
+        if (!success){
+            System.out.println("That room doesn't exist");
+        }
         return success;
     }
 }

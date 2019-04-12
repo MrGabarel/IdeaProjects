@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -17,8 +18,16 @@ public class Main {
             System.out.println("You are in the " + p.getCurrentRoom());
             System.out.println("What do you want to do? >");
             response = s.nextLine();
-            String word1 = response.substring(0, response.indexOf(" "));
-            String word2 = response.substring(response.indexOf(" ") + 1);
+            String word1;
+            String word2;
+            if (response.contains(" ")) {
+                word1 = response.substring(0, response.indexOf(" "));
+                word2 = response.substring(response.indexOf(" ") + 1);
+            }
+            else {
+                word1 = response;
+                word2 = "";
+            }
             Command command = commands.get(word1);
             if (command != null){
                 command.init(word2);
@@ -45,13 +54,13 @@ public class Main {
 
     private static String generateWorld() {
         g.addNode("hall", "a long dank hallway");
-        g.addNode("closet", "a dark, dark closet");
-        g.addNode("dungeon", "a scary dungeon");
-        g.addUndirectedEdge("hall", "dungeon");
-        g.addUndirectedEdge("hall", "closet");
-        g.getNode("hall").addItem("lobster");
-        g.getNode("hall").addItem("key");
-        g.getNode("closet").addItem("shirt");
+        //This creates a list of rooms with randomly created names and descriptions
+        for (int i = 0; i < 30; i++) {
+            g.addNode(getSaltString(), getSaltString());
+        }
+        for (int i = 0; i <40; i++) {
+            addUndirectedEdgeRandom();
+        }
         commands.put("go", new Go(g, p));
         commands.put("look", new Look(g, p));
         commands.put("take", new Take(g, p));
@@ -69,5 +78,23 @@ public class Main {
             if (i%5 == 0) g.addCreature(new PopStar(room, p, g), room);
         }
         return "hall";
+    }
+    private static String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 5) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+    }
+    private static void addUndirectedEdgeRandom(){
+        String room1 = g.getRandomRoom();
+        String room2 = g.getRandomRoom();
+        if (!room1.equals(room2)){
+            g.addUndirectedEdge(room1, room2);
+        }
     }
 }
