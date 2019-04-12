@@ -7,6 +7,7 @@ public class Main {
     private static HashMap<String, Command> commands = new HashMap<>();
 
     public static void main(String[] args) {
+
         p.setCurrentRoom(generateWorld());
         String response;
         Scanner s = new Scanner(System.in);
@@ -16,53 +17,17 @@ public class Main {
             System.out.println("You are in the " + p.getCurrentRoom());
             System.out.println("What do you want to do? >");
             response = s.nextLine();
-            if (isValidGo(response)) go(response);
-            else if (response.equals("look")) {
-                System.out.println(g.getNodes().get(p.getCurrentRoom()).getNeighborsNameAndDescriptions());
-            } else if (response.length() > 8 && response.substring(0, 8).equals("add room ")) {
-                g.addNode(response.substring(9), "");
-                g.addDirectedEdge(p.getCurrentRoom(), response.substring(9));
-            } else if (response.equals("items")) {
-                System.out.println(g.getNode(p.getCurrentRoom()).getItemNames());
-            } else if (response.equals("creatures")) {
-                g.getNode(p.getCurrentRoom()).displayCreatures();
-            } else if (response.equals("display inventory")) {
-                p.displayInventory();
-            } else if (response.length() > 5 && response.substring(0, 5).equals("take ")) {
-                if (g.getNode(p.getCurrentRoom()).getItem(response.substring(5)) != null) {
-                    p.addItem(response.substring(5), g.getNode(p.getCurrentRoom()).removeItem(response.substring(5)));
-                } else {
-                    System.out.println("That item doesn't exist, try \"items\" to get a list of the items in the room");
-                }
-            } else if (response.length() > 5 && response.substring(0, 5).equals("drop ")) {
-                if (p.getItems().get(response.substring(5)) != null) {
-                    g.getNode(p.getCurrentRoom()).addItem(response.substring(5), p.removeItem(response.substring(5)));
-
-                } else {
-                    System.out.println("That item doesn't exist, try \"display inventory\" to get a list of your items");
-                }
-            } else if (response.equals("quit"))
-                System.out.println("The game had ended");
-            else {
+            String word1 = response.substring(0, response.indexOf(" "));
+            String word2 = response.substring(response.indexOf(" ") + 1);
+            Command command = commands.get(word1);
+            if (command != null){
+                command.init(word2);
+                command.execute();
+            } else {
                 System.out.println("The command \"" + response + "\" doesn't exist. Try one of these instead:");
                 displayCommands();
             }
         } while (!response.equals("quit"));
-    }
-
-    private static void go(String response) {
-        if (g.getNodes().get(p.getCurrentRoom()).getNeighbor(response.substring(3)) != null) {
-            p.setCurrentRoom(response.substring(3));
-            System.out.println("HI" + g);
-            for (Creature c : g.getCreatures()) {
-                c.act();
-            }
-        } else
-            System.out.println("can't go there");
-    }
-
-    private static boolean isValidGo(String response) {
-        return (response.length() > 2 && response.substring(0, 3).equals("go ") && g.getNode(response.substring(3)) != null);
     }
 
     private static void displayCommands() {
@@ -72,8 +37,8 @@ public class Main {
         System.out.println("\"items\" gives you a list of all items in the room");
         System.out.println("\"creatures\" gives you a list of all creatures in the room");
         System.out.println("\"drop <itemName>\" makes the player drop an item in the inventory");
-        System.out.println("\"display inventory\" displays the player's inventory");
-        System.out.println("\"add room <roomName>\" adds room by the name roomName with a connection to your current room");
+        System.out.println("\"inventory\" displays the player's inventory");
+        System.out.println("\"add <roomName>\" adds room by the name roomName with a connection to your current room");
         System.out.println("\"quit\" quits the game");
 
     }
@@ -93,7 +58,10 @@ public class Main {
         commands.put("items", new Items(g, p));
         commands.put("creatures", new Creatures(g, p));
         commands.put("drop", new Drop(g, p));
-        //TODO add other methods fix interaction fix wumpus bug only finding one path leading to player
+        commands.put("inventory", new Inventory(g, p));
+        commands.put("add", new Add(g, p));
+        commands.put("quit", new Quit(g, p));
+        //TODO fix wumpus bug only finding one path leading to player
         for (int i = 0; i < 450; i++) {
             String room = g.getRandomRoom();
             g.addCreature(new Chicken(room, p, g), room);
