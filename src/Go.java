@@ -14,6 +14,11 @@ public class Go extends Command{
         boolean success = player.moveToRoom(room);
         if (!success){
             System.out.println("That room doesn't exist");
+        } else {
+            for (Creature c :
+                    graph.getCreatures()) {
+                c.act();
+            }
         }
         return success;
     }

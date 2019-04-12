@@ -2,7 +2,7 @@ public abstract class Creature {
     protected String currentRoom;
     protected Player player;
     protected Graph graph;
-    protected int roomSightRange = 2;
+    protected int roomSightRange = 5;
 
     public Creature(String currentRoom, Player player, Graph graph) {
         this.currentRoom = currentRoom;

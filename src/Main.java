@@ -3,6 +3,12 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    private static final int ROOMS = 30;
+    private static final int CONNECTIONS = 40;
+    private static final int ITEMS_PER_ROOM = 5;
+    private static final int CHICKENS = 450;
+    private static final int CHICKENS_PER_WUMPUS = 3;
+    private static final int CHICKENS_PER_POP_STAR = 5;
     private static Graph g = new Graph();
     private static Player p = new Player("Guy", "A level 5 wizard", g);
     private static HashMap<String, Command> commands = new HashMap<>();
@@ -23,13 +29,12 @@ public class Main {
             if (response.contains(" ")) {
                 word1 = response.substring(0, response.indexOf(" "));
                 word2 = response.substring(response.indexOf(" ") + 1);
-            }
-            else {
+            } else {
                 word1 = response;
                 word2 = "";
             }
             Command command = commands.get(word1);
-            if (command != null){
+            if (command != null) {
                 command.init(word2);
                 command.execute();
             } else {
@@ -55,11 +60,16 @@ public class Main {
     private static String generateWorld() {
         g.addNode("hall", "a long dank hallway");
         //This creates a list of rooms with randomly created names and descriptions
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < ROOMS; i++) {
             g.addNode(getSaltString(), getSaltString());
         }
-        for (int i = 0; i <40; i++) {
+        for (int i = 0; i < CONNECTIONS; i++) {
             addUndirectedEdgeRandom();
+        }
+        for (String room : g.getNodes().keySet()) {
+            for (int i = 0; i < ITEMS_PER_ROOM; i++) {
+                g.getNode(room).addItem(getSaltString(), getSaltString());
+            }
         }
         commands.put("go", new Go(g, p));
         commands.put("look", new Look(g, p));
@@ -71,14 +81,15 @@ public class Main {
         commands.put("add", new Add(g, p));
         commands.put("quit", new Quit(g, p));
         //TODO fix wumpus bug only finding one path leading to player
-        for (int i = 0; i < 450; i++) {
+        for (int i = 0; i < CHICKENS; i++) {
             String room = g.getRandomRoom();
             g.addCreature(new Chicken(room, p, g), room);
-            if (i%3 == 0) g.addCreature(new Wumpus(room, p, g), room);
-            if (i%5 == 0) g.addCreature(new PopStar(room, p, g), room);
+            if (i % CHICKENS_PER_WUMPUS == 0) g.addCreature(new Wumpus(room, p, g), room);
+            if (i % CHICKENS_PER_POP_STAR == 0) g.addCreature(new PopStar(room, p, g), room);
         }
         return "hall";
     }
+
     private static String getSaltString() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
@@ -90,10 +101,11 @@ public class Main {
         String saltStr = salt.toString();
         return saltStr;
     }
-    private static void addUndirectedEdgeRandom(){
+
+    private static void addUndirectedEdgeRandom() {
         String room1 = g.getRandomRoom();
         String room2 = g.getRandomRoom();
-        if (!room1.equals(room2)){
+        if (!room1.equals(room2)) {
             g.addUndirectedEdge(room1, room2);
         }
     }
